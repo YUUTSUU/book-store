@@ -1,0 +1,10 @@
+.cart__container {
+  grid-column: 2/3;
+  grid-row: 2/3;
+  margin-top: 3rem;
+}
+
+.cart__inner {
+  display: flex;
+  // height: 100%;
+}

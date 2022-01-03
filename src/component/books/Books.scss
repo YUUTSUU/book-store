@@ -1,0 +1,107 @@
+.books {
+  &__list {
+    grid-column-gap: 1.5rem;
+    list-style: none;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 29rem;
+    min-height: 100%;
+    box-shadow: 0 0 1rem rgb(203, 231, 233);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+
+  &__image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 85%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  &__text {
+    padding: 1rem 0;
+  }
+
+  &__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  &__description {
+    margin-top: .7rem;
+    font-size: 1.3rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    bottom: 0;
+  }
+
+  &__price {
+    font-size: 1.8rem;
+    font-weight: 700;
+
+    b {
+      margin-left: .5rem;
+    }
+  }
+
+  &__button {
+    padding: .7rem;
+    width: 10rem;
+    border: none;
+    background-color: rgb(23, 103, 207);
+    border-radius: .3rem;
+    box-shadow: 0.3rem 0.3rem .8rem rgba(23, 103, 207, 0.445);
+    cursor: pointer;
+    color: #fff;
+
+    &:hover {
+      background-color: rgb(10, 83, 179);
+    }
+
+    &_active {
+    background-color: rgb(10, 119, 19);
+    box-shadow: 0.3rem 0.3rem .8rem rgba(10, 119, 19, 0.445);
+
+      &:hover {
+        background-color: rgb(9, 104, 17);
+      }
+    }
+
+    &_delete {
+      background-color: rgb(185, 12, 12);
+      box-shadow: 0.3rem 0.3rem .8rem rgba(185, 12, 12, 0.445);
+
+      &:hover {
+        background-color: rgb(146, 11, 11);
+      }
+    }
+  }
+}

@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {Provider} from 'react-redux'
+import store from './redux/store'
+import {MainPage} from './page/mainPage/MainPage'
+import {CartPage} from './page/cartPage/CartPage'
+import {useBooks} from "./hook/useBooks"
+import {BooksContext} from './context/BooksContext'
+import './App.scss'
 
 function App() {
+  const booksHook = useBooks()
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <BooksContext.Provider value={booksHook}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<MainPage />} />
+            <Route path='/cart' element={<CartPage />} />
+          </Routes>
+        </BrowserRouter>
+      </BooksContext.Provider>
+    </Provider>
+  )
 }
 
-export default App;
+export default App

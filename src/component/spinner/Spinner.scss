@@ -1,0 +1,43 @@
+.spinner {
+  display: block;
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  margin: auto;
+  margin-top: 15rem;
+
+  &__item {
+    display: inline-block;
+    position: absolute;
+    left: 0.5rem;
+    width: 1rem;
+    background: #000;
+    animation: spinner 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  }
+
+  &__item:nth-child(1) {
+    left: 0.5rem;
+    animation-delay: -0.24s;
+  }
+
+  &__item:nth-child(2) {
+    left: 2rem;
+    animation-delay: -0.12s;
+  }
+
+  &__item:nth-child(3) {
+    left: 3.5rem;
+    animation-delay: 0;
+  }
+
+  @keyframes spinner {
+    0% {
+      top: 0.5rem;
+      height: 4rem;
+    }
+    50%, 100% {
+      top: 1.5rem;
+      height: 2rem;
+    }
+  }
+}
