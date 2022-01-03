@@ -1,0 +1,386 @@
+html {
+  font-size: 62.5%;
+
+  @media only screen and (max-width: 77.5em) {
+    font-size: 50%;
+  }
+}
+
+*, ::before, ::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+   z-index: 1;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 90rem 1fr;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+
+  @media only screen and (max-width: 77.5em) {
+    grid-template-columns: 10rem 1fr 10rem;
+  }
+
+  @media only screen and (max-width: 62.5em) {
+    grid-template-columns: 7rem 1fr 7rem;
+  }
+
+  @media only screen and (max-width: 50em) {
+    grid-template-columns: 4rem 1fr 4rem;
+  }
+
+  @media only screen and (max-width: 40.62em) {
+    grid-template-columns: 2rem 1fr 2rem;
+  }
+
+  @media only screen and (max-width: 31.25em) {
+    grid-template-columns: 1.3rem 1fr 1.3rem;
+  }
+}
+
+.main {
+  &__container {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    margin-top: 3rem;
+  }
+}
+
+.menu {
+  padding: 1rem calc(50% - 50rem);
+  background-color: rgb(23, 103, 207);
+
+  @media only screen and (max-width: 77.5em) {
+    padding: 1rem 10rem;
+  }
+
+  @media only screen and (max-width: 62.5em) {
+    padding: 1rem 3.5rem;
+  }
+
+  @media only screen and (max-width: 50em) {
+    padding: 1rem 3rem;
+  }
+
+  &__wrapper {
+    grid-column: 2/3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    text-decoration: none;
+    color: #fff;
+    font-size: 3rem;
+  }
+
+  &__list {
+    list-style: none;
+    font-size: 2rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+
+  &__text {
+    margin-left: .5rem;
+
+    @media only screen and (max-width: 50em) {
+      display: none;
+    }
+  }
+}
+
+.books {
+  &__list {
+    grid-column-gap: 1.5rem;
+    list-style: none;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25rem;
+    min-height: 100%;
+    box-shadow: 0 0 1rem rgb(203, 231, 233);
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    transition: all .3s;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+
+  &__image {
+    width: 80%;
+    margin: 0 auto;
+
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+  }
+
+  &__text {
+    padding-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  &__description {
+    margin-top: .7rem;
+    font-size: 1.3rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    bottom: 0;
+  }
+
+  &__price {
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    b {
+      margin-left: .5rem;
+
+      span {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  &__button {
+    padding: .5rem;
+    width: 9rem;
+    border: none;
+    background-color: rgb(23, 103, 207);
+    border-radius: .3rem;
+    box-shadow: 0.3rem 0.3rem .8rem rgba(23, 103, 207, 0.445);
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.5rem;
+
+    &:hover {
+      background-color: rgb(10, 83, 179);
+    }
+
+    &_active {
+    background-color: rgb(10, 119, 19);
+    box-shadow: 0.3rem 0.3rem .8rem rgba(10, 119, 19, 0.445);
+
+      &:hover {
+        background-color: rgb(9, 104, 17);
+      }
+    }
+
+    &_delete {
+      background-color: rgb(185, 12, 12);
+      box-shadow: 0.3rem 0.3rem .8rem rgba(185, 12, 12, 0.445);
+
+      &:hover {
+        background-color: rgb(146, 11, 11);
+      }
+    }
+  }
+}
+
+.cart {
+  &__container {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    margin-top: 3rem;
+  }
+
+  &__inner {
+    display: flex;
+  }
+
+  &__list {
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    @media only screen and (max-width: 50em) {
+      display: block;
+    }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    width: 30rem;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 25rem;
+  }
+
+  &__image {
+    width: 10rem;
+    height: 10rem;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__title {
+    width: 20rem;
+    font-size: 1.5rem;
+  }
+
+  &__counter {
+    display: flex;
+    font-size: 2rem;
+    justify-content: space-between;
+    width: 7rem;
+
+    @media only screen and (max-width: 50em) {
+      margin-left: 1rem;
+    }
+
+    &_item {
+      background-color: #ebe6e64d;
+      border-radius: 1rem;
+      padding: .3rem;
+      cursor: pointer;
+      user-select: none;
+
+      &:active {
+        background-color: #b6b2b24d
+      }
+    }
+  }
+
+  &__num {
+    margin: 0 1rem;
+  }
+
+  &__delete {
+    margin-left: 2rem;
+    font-size: 2.5rem;
+    cursor: pointer;
+  }
+
+  &__price {
+    margin-left: 1rem;
+    text-align: right;
+    width: 10rem;
+    font-size: 1.8rem;
+  }
+}
+
+.check {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  width: 25rem;
+  margin-top: 2rem;
+
+  &__price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+
+  &__button {
+    padding: 1rem 2rem;
+    border: none;
+    background-color: rgb(23, 103, 207);
+    border-radius: .3rem;
+    box-shadow: 0.3rem 0.3rem .8rem rgba(23, 103, 207, 0.445);
+    cursor: pointer;
+    color: #fff;
+
+    &:hover {
+      background-color: rgb(10, 83, 179);
+    }
+  }
+
+  &__pay {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    border-top: 0.2rem dotted #000;
+    padding-top: 1rem;
+    font-size: 1.5rem;
+  }
+}
+
+.spinner {
+  display: block;
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  margin: auto;
+  margin-top: 27%;
+
+  &__item {
+    display: inline-block;
+    position: absolute;
+    left: 0.5rem;
+    width: 1rem;
+    background: rgb(23, 103, 207);
+    animation: spinner 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  }
+
+  &__item:nth-child(1) {
+    left: 0.5rem;
+    animation-delay: -0.24s;
+  }
+
+  &__item:nth-child(2) {
+    left: 2rem;
+    animation-delay: -0.12s;
+  }
+
+  &__item:nth-child(3) {
+    left: 3.5rem;
+    animation-delay: 0;
+  }
+
+  @keyframes spinner {
+    0% {
+      top: 0.5rem;
+      height: 4rem;
+    }
+    50%, 100% {
+      top: 1.5rem;
+      height: 2rem;
+    }
+  }
+}

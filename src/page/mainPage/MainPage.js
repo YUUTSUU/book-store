@@ -1,44 +1,19 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {fetchBooks} from '../../redux/features/booksSlice'
-import {useContext} from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
 import {Spinner} from '../../component/spinner/Spinner'
 import {Books} from '../../component/books/Books'
 import {Menu} from '../../component/menu/Menu'
-import {API} from '../../service/service'
-import {BooksContext} from '../../context/BooksContext'
-import './MainPage.scss'
+import {Error} from '../../component/error/Error'
 
 export const MainPage = () => {
-  const [loading, setLoading] = useState(true)
-  const [books, setBooks] = useState([])
-  const [page, setPage] = useState(3)
-  const [total, setTotal] = useState(0)
-  const {booksId, booksAddCart, booksItemsCart} = useContext(BooksContext)
-  const {data, status, error} = useSelector(state => state.books)
+  const {data, filter, status, currentPage, totalPage} = useSelector(state => state.books)
   const dispatch = useDispatch()
 
-  const booksHandler = (id) => {
-    booksAddCart(id, books)
-  }
-
-  const fetchBook = (page) => {
-    API.get('/new', {params: {page}})
-      .then(res => {
-        setBooks(prevBooks => [...prevBooks, ...res.data.books])
-        setPage(prevPage => prevPage + 1)
-        setTotal(res.data.total)
-        setLoading(false)
-        console.log('request')
-      })
-      .catch(err => console.log(err))
-  }
-
   useEffect(() => {
-    fetchBook(page)
+    dispatch(fetchBooks())
     console.log('render')
-    dispatch(fetchBooks({page}))
   }, [dispatch])
 
   return (
@@ -46,20 +21,19 @@ export const MainPage = () => {
       <Menu />
       <div className="container">
         <div className='main__container'>
-          {status === 'loading' ? <Spinner key={0} /> : null}
           <InfiniteScroll
             element={'ul'}
-            pageStart={page}
-            loadMore={() => fetchBook(page)}
-            hasMore={page < total ? true : false}
+            pageStart={currentPage}
+            loadMore={() => dispatch(fetchBooks())}
+            hasMore={currentPage < totalPage ? true : false}
             threshold={700}
             loader={<Spinner key={0} />}
             initialLoad={false}
             isReverse={false}
             className='books__list'
           >
-            {data.map((item, i) => (<Books key={i} {...item} booksId={booksId} booksHandler={booksHandler}
-              booksItemsCart={booksItemsCart} />))}
+            {status === 'rejected' ? <Error /> : null}
+            {status === 'loading' ? <Spinner key={0} /> : data.map((item) => (<Books key={item.id} {...item} />))}
           </InfiniteScroll>
         </div>
       </div>

@@ -3,9 +3,12 @@ import {API} from '../../service/service'
 
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
-  async function ({page}, {rejectWithValue}) {
+  async function (_, {rejectWithValue, dispatch, getState}) {
     try {
-      const res = await API.get('/ne', {params: {page}})
+      const {currentPage} = getState().books
+      const res = await API.get('/new', {params: {page: currentPage}})
+      dispatch(incCurrentPage())
+      dispatch(incTotalPage(res.data.total / res.data.books.length))
       return res.data.books.map(_transform)
     } catch (error) {
       return rejectWithValue(error.message)
@@ -15,16 +18,17 @@ export const fetchBooks = createAsyncThunk(
 
 const _transform = (data) => {
   return {
+    id: data.isbn13,
     title: data.title,
     subtitle: data.subtitle,
-    id: data.isbn13,
-    price: data.price,
+    price: _number(_rate(data.price)),
     image: data.image,
     url: data.url
   }
 }
-
-const _booksPrice = (arr) => arr.reduce((num, obj) => obj.price.slice(1) + num, 0)
+const _rate = (price) => Number((price.slice(1) * 435).toFixed(0))
+const _number = (number) => number <= 0 ? 30000 : number //чтобы изменить 0 на 30000
+const _booksPrice = (arr) => arr.reduce((num, obj) => obj.price + num, 0)
 const _totalCount = (obj) => [].concat.apply([], Object.values(obj)).reduce((num, obj) => obj.count + num, 0)
 const _totalPrice = (obj) => [].concat.apply([], Object.values(obj)).reduce((num, obj) => obj.price + num, 0)
 
@@ -32,9 +36,12 @@ export const booksSlice = createSlice({
   name: 'books',
   initialState: {
     data: [],
+    filter: [],
+    totalPage: null,
+    currentPage: 1,
     cart: {},
-    totalCount: 0,
-    totalPrice: 0,
+    totalCount: null,
+    totalPrice: null,
     status: null,
     error: null
   },
@@ -67,16 +74,16 @@ export const booksSlice = createSlice({
         ...state.cart
       }
 
-      const count = _totalCount(newCart)
-      const price = _totalPrice(newCart)
+      const count = newCart[action.payload.id].count
+      const price = newCart[action.payload.id].price
 
       delete newCart[action.payload.id]
 
       return {
         ...state,
         cart: newCart,
-        totalCount: count,
-        totalPrice: price
+        totalCount: state.totalCount - count,
+        totalPrice: state.totalPrice - price
       }
     },
     incrementCartCounter: (state, action) => {
@@ -107,7 +114,7 @@ export const booksSlice = createSlice({
     decrementCartCounter: (state, action) => {
       const newBooks = state.cart[action.payload.id].books.length > 1 ?
         state.cart[action.payload.id].books.slice(1) : state.cart[action.payload.id].books
-      
+
       const newCart = {
         ...state.cart,
         [action.payload.id]: {
@@ -134,6 +141,31 @@ export const booksSlice = createSlice({
         totalCount: 0,
         totalPrice: 0
       }
+    },
+    incCurrentPage: (state) => {
+      return {
+        ...state,
+        currentPage: state.currentPage + 1
+      }
+    },
+    incTotalPage: (state, action) => {
+      return {
+        ...state,
+        totalPage: action.payload
+      }
+    },
+    searchHandler: (state, action) => {
+      if (action.payload.target.value.length === 0) {
+        return {
+          ...state,
+          filter: state.data
+        }
+      } else {
+        return {
+          ...state,
+          filter: state.data.filter(item => item.title.toLowerCase().indexOf(action.payload.target.value))
+        }
+      }
     }
   },
   extraReducers: {
@@ -152,5 +184,14 @@ export const booksSlice = createSlice({
   }
 })
 
-export const {bookAddCart, bookDeleteCart, incrementCartCounter, decrementCartCounter, clearCart} = booksSlice.actions
+export const {
+  bookAddCart,
+  bookDeleteCart,
+  incrementCartCounter,
+  decrementCartCounter,
+  clearCart,
+  incCurrentPage,
+  incTotalPage,
+  searchHandler
+} = booksSlice.actions
 export default booksSlice.reducer

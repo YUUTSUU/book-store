@@ -1,16 +1,11 @@
-import {useContext} from 'react'
+import {useSelector} from 'react-redux'
 import {Menu} from '../../component/menu/Menu'
-import {BooksContext} from '../../context/BooksContext'
 import {Cart} from '../../component/cart/Cart'
 import {Check} from '../../component/check/Check'
-import './CartPage.scss'
 
 export const CartPage = () => {
-  const {booksItems, booksDeleteCart, sum, sumDollar, booksItemsCart, cartItems, totalCurrent, totalCount, deleteItemsCart} = useContext(BooksContext)
-
-  const cartHandler = (id) => {
-    booksDeleteCart(id)
-  }
+  const {cart} = useSelector(state => state.books)
+  const data = Object.keys(cart).map(key => cart[key].books[0])
 
   return (
     <section className='cart'>
@@ -19,19 +14,9 @@ export const CartPage = () => {
         <div className='cart__container'>
           <div className='cart__inner'>
             <ul className='cart__list'>
-              {booksItems.map((item, i) => (
-                <Cart key={i} {...item}
-                  cartHandler={cartHandler}
-                  sumDollar={sumDollar}
-                  booksItemsCart={booksItemsCart}
-                  deleteItemsCart={deleteItemsCart}
-                  cartItems={cartItems}
-                  totalCurrent={totalCurrent}
-                  totalCount={totalCount}
-                />
-              ))}
+              {data && data.map(item => <Cart key={item.id} {...item} />)}
             </ul>
-            <Check sum={sum}/>
+            <Check />
           </div>
         </div>
       </div>

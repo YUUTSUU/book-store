@@ -1,6 +1,5 @@
 import {Link} from "react-router-dom"
 import {MdShoppingCart} from "react-icons/md";
-import './Menu.scss'
 
 export const Menu = () => {
   return (
@@ -8,13 +7,13 @@ export const Menu = () => {
       <div className="container">
         <div className="menu__wrapper">
           <div className="menu__brand">
-            <Link to="/" className="menu__logo">Book Store</Link>
+            <Link to="/" className="menu__logo">Books</Link>
           </div>
           <ul className="menu__list">
             <li className="menu__item">
               <Link to="/cart" className="menu__link">
                 <MdShoppingCart />
-                <span className="menu__text">Корзина</span>
+                <span className="menu__text">Cart</span>
               </Link>
             </li>
           </ul>

@@ -1,13 +1,24 @@
-import './Check.scss'
+import {useSelector} from 'react-redux'
 
-export const Check = ({sum}) => {
+export const Check = () => {
+  const {totalCount, totalPrice} = useSelector(state => state.books)
+
   return (
     <div className="check">
       <div className='check__price'>
-        <span>{0} книг на сумму:</span>
-        <b>{sum.toFixed(2)}</b>
+        <span>{!totalCount ? 0 : totalCount} books worth:</span>
+        <b>{!totalPrice ? 0 : totalPrice}</b>
       </div>
-      <button className='check__button'>Оформить заказ</button>
+      {
+        !totalPrice ? null :
+          (
+            <div className='check__pay'>
+              <span>to pay</span>
+              <b>{totalPrice}</b>
+            </div>
+          )
+      }
+      <button className='check__button'>Checkout</button>
     </div>
   )
 }

@@ -1,50 +1,28 @@
-import {useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
 import {MdOutlineDeleteOutline} from "react-icons/md";
 import {HiPlus, HiMinus} from "react-icons/hi"
-import './Cart.scss'
-import {useEffect} from 'react';
+import {bookDeleteCart, incrementCartCounter, decrementCartCounter, } from '../../redux/features/booksSlice'
 
-export const Cart = ({image, title, price, isbn13, cartHandler, sumDollar, booksItemsCart, cartItems, totalCurrent, totalCount, deleteItemsCart}) => {
-  const [counter, setCounter] = useState(1)
-
-  const counterIncrement = (e) => {
-    setCounter(prevCounter => ++prevCounter)
-    sumDollar(price.slice(1) * counter)
-    booksItemsCart(isbn13, price.slice(1))
-    
-  }
-
-  const counterDecrement = (e) => {
-    if (counter >= 1)
-    setCounter(prevCounter => Math.max(--prevCounter, 1))
-    deleteItemsCart(isbn13, price.slice(1))
-  }
-
-  useEffect(() => {
-    console.log(cartItems)
-    console.log(totalCount)
-  }, [cartItems])
-
-  // useEffect(() => {
-  //   booksItemsCart(isbn13, price.slice(1))
-  // }, [])
+export const Cart = (props) => {
+  const {cart} = useSelector(state => state.books)
+  const dispatch = useDispatch()
 
   return (
     <li className='cart__item'>
       <div className='cart__left'>
         <div className='cart__image'>
-          <img src={image} alt="" />
+          <img src={props.image} alt="" />
         </div>
-        <h3 className='cart__title'>{title}</h3>
+        <h3 className='cart__title'>{props.title}</h3>
       </div>
       <div className='cart__right'>
         <div className='cart__counter'>
-          <HiMinus className='cart__counter_item' onClick={counterDecrement}/>
-          <span className="cart__num">{counter}</span>
-          <HiPlus className='cart__counter_item' onClick={counterIncrement}/>
+          <HiMinus className='cart__counter_item' onClick={() => dispatch(decrementCartCounter(props))}/>
+          <span className="cart__num">{cart[props.id].count}</span>
+          <HiPlus className='cart__counter_item' onClick={() => dispatch(incrementCartCounter(props))} />
         </div>
-        <MdOutlineDeleteOutline className='cart__delete' onClick={() => cartHandler(isbn13)} />
-        <b className='cart__price'>${price.slice(1)}</b>
+        <MdOutlineDeleteOutline className='cart__delete' onClick={() => dispatch(bookDeleteCart(props))}/>
+        <span className='cart__price'><b>{props.price}</b> KZT</span>
       </div>
     </li>
   )
