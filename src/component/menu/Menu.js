@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom"
-import {MdShoppingCart} from "react-icons/md";
+import {MdShoppingCart} from "react-icons/md"
+import {Search} from "../search/Search"
 
 export const Menu = () => {
   return (
@@ -10,6 +11,9 @@ export const Menu = () => {
             <Link to="/" className="menu__logo">Books</Link>
           </div>
           <ul className="menu__list">
+            <li className="menu__item">
+              <Search/>
+            </li>
             <li className="menu__item">
               <Link to="/cart" className="menu__link">
                 <MdShoppingCart />

@@ -2,8 +2,8 @@ import {Error} from "../../component/error/Error"
 
 export const NotFound = () => {
   return (
-    <div className="notfound" >
+    <section className="notfound" >
       <Error/>
-    </div>
+    </section>
   )
 }

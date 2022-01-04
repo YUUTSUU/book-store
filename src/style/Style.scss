@@ -41,7 +41,7 @@ html {
   }
 }
 
-.main {
+.page {
   &__container {
     grid-column: 2/3;
     grid-row: 2/3;
@@ -81,6 +81,8 @@ html {
   &__list {
     list-style: none;
     font-size: 2rem;
+    display: flex;
+    align-items: center;
   }
 
   &__link {
@@ -88,6 +90,7 @@ html {
     color: #fff;
     display: flex;
     align-items: center;
+    font-size: 3rem;
   }
 
   &__text {
@@ -95,6 +98,55 @@ html {
 
     @media only screen and (max-width: 50em) {
       display: none;
+    }
+  }
+}
+
+.search {
+  &__form {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-right: 3rem;
+
+    input {
+    text-transform: capitalize;
+    text-align: center;
+    padding: 0.4rem 2rem 0.4rem 1rem;
+    outline: none;
+    border: none;
+    border-radius: .5rem;
+    font-size: 1.7rem;
+    line-height: 1rem;
+    color: rgb(17, 88, 182);
+    width: 20rem;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder { 
+        color: rgb(17, 88, 182);
+      }
+    }
+
+    button {
+      position: absolute;
+      transform: translateY(50%);
+      background: transparent;
+      border: none;
+      bottom: 50%;
+      right: .2rem;
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+
+      svg {
+        width: 100%;
+      }
     }
   }
 }
@@ -258,8 +310,8 @@ html {
   }
 
   &__title {
-    width: 20rem;
-    font-size: 1.5rem;
+    width: 19rem;
+    font-size: 1.3rem;
   }
 
   &__counter {
@@ -300,6 +352,24 @@ html {
     text-align: right;
     width: 10rem;
     font-size: 1.8rem;
+  }
+
+  &__clear {
+    padding: .9rem;
+    width: 15rem;
+    border: none;
+    background-color: rgb(240, 45, 45);
+    border-radius: .3rem;
+    box-shadow: 0.3rem 0.3rem .8rem rgba(23, 103, 207, 0.445);
+    cursor: pointer;
+    color: #fff;
+    font-size: 1.5rem;
+    margin-left: 1.8rem;
+    margin-top: 5rem;
+
+    &:hover {
+      background-color: rgb(224, 26, 26);
+    }
   }
 }
 

@@ -1,14 +1,29 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {API} from '../../service/service'
 
+export const searchBooks = createAsyncThunk(
+  'books/searchBooks',
+  async function (query, {rejectWithValue, dispatch, getState}) {
+    try {
+      const {currentSearchPage} = getState().books
+      const res = await API.get(`/search/${ query }/${ currentSearchPage }`)
+      dispatch(incCurrentSearchPage())
+      dispatch(incTotalSearchPage(res.data.total))
+      return res.data.books.map(_transform)
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  }
+)
+
 export const fetchBooks = createAsyncThunk(
   'books/fetchBooks',
   async function (_, {rejectWithValue, dispatch, getState}) {
     try {
       const {currentPage} = getState().books
-      const res = await API.get('/new', {params: {page: currentPage}})
+      const res = await API.get(`/search/all/${ currentPage }`)
       dispatch(incCurrentPage())
-      dispatch(incTotalPage(res.data.total / res.data.books.length))
+      dispatch(incTotalPage(res.data.total))
       return res.data.books.map(_transform)
     } catch (error) {
       return rejectWithValue(error.message)
@@ -36,14 +51,17 @@ export const booksSlice = createSlice({
   name: 'books',
   initialState: {
     data: [],
-    filter: [],
-    totalPage: null,
     currentPage: 1,
+    totalPage: null,
+    searchData: [],
+    searchText: '',
+    currentSearchPage: 1,
+    totalSearchPage: null,
     cart: {},
     totalCount: null,
     totalPrice: null,
     status: null,
-    error: null
+    error: null,
   },
   reducers: {
     bookAddCart: (state, action) => {
@@ -89,7 +107,7 @@ export const booksSlice = createSlice({
     incrementCartCounter: (state, action) => {
       const newBooks = [
         ...state.cart[action.payload.id].books,
-        Object.assign({}, state.cart[action.payload.id].books[0])
+        action.payload
       ]
 
       const newCart = {
@@ -142,6 +160,12 @@ export const booksSlice = createSlice({
         totalPrice: 0
       }
     },
+    firstFetch: (state) => {
+      return {
+        ...state,
+        first: false
+      }
+    },
     incCurrentPage: (state) => {
       return {
         ...state,
@@ -154,17 +178,28 @@ export const booksSlice = createSlice({
         totalPage: action.payload
       }
     },
+    incCurrentSearchPage: (state) => {
+      return {
+        ...state,
+        currentSearchPage: state.currentSearchPage + 1
+      }
+    },
+    incTotalSearchPage: (state, action) => {
+      return {
+        ...state,
+        totalSearchPage: action.payload
+      }
+    },
     searchHandler: (state, action) => {
-      if (action.payload.target.value.length === 0) {
-        return {
-          ...state,
-          filter: state.data
-        }
-      } else {
-        return {
-          ...state,
-          filter: state.data.filter(item => item.title.toLowerCase().indexOf(action.payload.target.value))
-        }
+      return {
+        ...state,
+        searchText: action.payload.target.value
+      }
+    },
+    clearSearchData: (state) => {
+      return {
+        ...state,
+        searchData: []
       }
     }
   },
@@ -175,12 +210,24 @@ export const booksSlice = createSlice({
     },
     [fetchBooks.fulfilled]: (state, action) => {
       state.status = 'resolved'
-      state.data = action.payload
+      state.data = [...state.data, ...action.payload]
     },
     [fetchBooks.rejected]: (state, action) => {
       state.status = 'rejected'
       state.error = action.payload
-    }
+    },
+    [searchBooks.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+    },
+    [searchBooks.fulfilled]: (state, action) => {
+      state.status = 'resolved'
+      state.searchData = [...state.searchData, ...action.payload]
+    },
+    [searchBooks.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
   }
 })
 
@@ -192,6 +239,11 @@ export const {
   clearCart,
   incCurrentPage,
   incTotalPage,
+  firstFetch,
+  incCurrentSearchPage,
+  incTotalSearchPage,
+  clearData,
+  clearSearchData,
   searchHandler
 } = booksSlice.actions
 export default booksSlice.reducer
