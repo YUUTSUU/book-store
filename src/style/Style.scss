@@ -271,6 +271,10 @@ html {
 
   &__inner {
     display: flex;
+
+    @media only screen and (max-width: 50em) {
+      display: block;
+    }
   }
 
   &__list {
@@ -321,6 +325,7 @@ html {
     width: 7rem;
 
     @media only screen and (max-width: 50em) {
+      margin-top: 1rem;
       margin-left: 1rem;
     }
 
@@ -379,6 +384,11 @@ html {
   margin-left: auto;
   width: 25rem;
   margin-top: 2rem;
+
+  @media only screen and (max-width: 50em) {
+    margin-left: 0;
+    margin-top: 10rem;
+  }
 
   &__price {
     display: flex;
